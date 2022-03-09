@@ -1,0 +1,16 @@
+{% extends "tnt_mgmt/base.html" %}
+{% block content %}
+    <h1>List of registered users</h1>
+    {% for user in users %}
+        <article class="media content-section">
+            <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="#">{{ user.username }}</a>
+                <small class="text-muted">{{ user.date_registered }}</small>
+            </div>
+            <h2><a class="article-title" href="#">{{ user.role }}</a></h2>
+            <p class="article-content">{{ user.bio }}</p>
+            </div>
+        </article>
+    {% endfor %}
+{% endblock content %}
