@@ -1,6 +1,6 @@
 {% extends "tnt_mgmt/base.html" %}
 {% block content %}
-    <h1>List of registered users</h1>
+    <h1>List of registered users</h1> <a href="{% url 'create_users' %}"> Create a new user </a>
     {% for user in users %}
         <article class="media content-section">
             <div class="media-body">

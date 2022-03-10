@@ -1,4 +1,12 @@
 {% extends "tnt_mgmt/base.html" %}
+{% load extra_filters %}
 {% block content %}
-    <h1>Homepage</h1>
+    {% comment %} <h1></h1> {% endcomment %}
+    <h1>Welcome to <strong>Happy Tenants</strong></h1><h2>The best tenant management system</h2>
+    <h3>Hello {{ request.user.first_name }}</h3>
+    {% if request.user|is_active %}
+        <h4>You can use any available to you service </br> from the menu on the right</h4> 
+    {% else %}
+        <p>You account has not yet been verified</br> Please wait for verification</p> 
+    {% endif %}
 {% endblock content %}
