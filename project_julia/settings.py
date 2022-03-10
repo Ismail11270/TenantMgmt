@@ -27,11 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+# AUTH_USER_MODEL = 'tenant_mgmt.User'
 # Application definition
 
 INSTALLED_APPS = [
-    'tenant_mgmt.apps.TenantMgmtConfig',
+    'tenant_mgmt',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
