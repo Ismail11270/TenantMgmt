@@ -33,6 +33,7 @@
                       {% if request.user|has_group:"administrator" %}
                         <a class="nav-item nav-link" href="/../admin">Admin Panel</a>
                       {% endif %}  
+                      <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
                       <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                     {% else %}
                       <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
@@ -64,14 +65,15 @@
                   {% else %}
                     <p class='text-muted'>Navigate to any available service
                       <ul class="list-group">
-                        <li class="list-group-item list-group-item-light"><a href="#">Issues Management</a></li>
-                        <li class="list-group-item list-group-item-light"><a href="#">Property Management</a></li>
-                        <li class="list-group-item list-group-item-light"><a href="#">User Management</a></li>
+                        <li class="list-group-item list-group-item-light"><a href="{% url 'issues' %}">Issues Management</a></li>
+                        <li class="list-group-item list-group-item-light"><a href="{% url 'properties'%}">Property Management</a></li>
+                        <li class="list-group-item list-group-item-light"><a href="#">My Properties</a></li>
                         <li class="list-group-item list-group-item-light"><a href="#">etc</a></li>
                       </ul>
                     </p>
                   {% endif %}
                 </div>
+                {% block additional_actions %}{% endblock %}
               </div>
               {% endif %}
             </div>

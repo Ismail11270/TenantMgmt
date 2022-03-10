@@ -7,16 +7,19 @@ class Address(models.Model):
     street = models.CharField(max_length=50, null=False)
     apartment = models.CharField(max_length=10, null=False)
     city = models.CharField(max_length=50, null=False)
-    zipCode = models.IntegerField(null=False)
+    zipCode = models.CharField(max_length=15, null=False)
     country = models.CharField(max_length=50, null=False)  
+
+    def __str__(self) -> str:
+        return f'{self.country} {self.zipCode} {self.city} , {self.street} {self.apartment}'
 
 
 class Property(models.Model):
     name = models.CharField(max_length=50, null=True)
-    address = models.OneToOneField(Address, on_delete=models.CASCADE, null=False)
-    ownerId = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="owner_property_set", null=True)
-    tenants = models.ManyToManyField(User, related_name="tenant_property_set")
-
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True, related_name="address_properties_set")
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="owner_property_set", null=True, blank=True)
+    tenants = models.ManyToManyField(User, related_name="tenant_property_set", blank=True)
+    dateAdded = models.DateTimeField(auto_now_add=True)
     def __str__(self) -> str:
         return self.name
 

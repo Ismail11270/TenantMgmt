@@ -1,0 +1,25 @@
+{% extends "tnt_mgmt/base.html" %}
+{% load extra_filters %}
+{% block content %}
+    <h1>List of registered properties</h1>
+    {% for property in properties %}
+        <article class="media content-section">
+            <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="#">{{ property.name }}</a>
+                <small class="text-muted">{{ property.date_added }}</small>
+            </div>
+            <h2><a class="article-title" href="#">{{ user.owner }}</a></h2>
+            <p class="article-content">{{ user.bio }}</p>
+            </div>
+        </article>
+    {% endfor %}
+{% endblock content %}
+{% block additional_actions %}
+    <div class="content-section">
+        <h5 class='text-muted'>Property management tools</h5>
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-light"><a href="{% url 'newProperty' %}">Add property</a></li>
+        </ul>
+    </div>
+{% endblock additional_actions %}

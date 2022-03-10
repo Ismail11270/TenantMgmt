@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import CreateUserForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def register(request):
@@ -23,3 +24,7 @@ def listUsers(request):
         'title_spec': 'Users'
     }
     return render(request, 'users/users_list.html', context)
+
+@login_required
+def profile(request):
+    return render(request, 'users/profile.html')
