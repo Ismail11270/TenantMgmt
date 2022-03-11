@@ -5,3 +5,4 @@ ignore/
 /users/__pycache__
 /users/migrations/__pycache__
 /tenant_mgmt/templatetags/__pycache__
+env
