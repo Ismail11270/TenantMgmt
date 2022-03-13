@@ -41,6 +41,8 @@ class IssuesListView(ListView):
     def get_queryset(self):
         if util.is_admin_or_manager(self.request.user):
             return Issue.objects.all()
+        if util.is_employee(self.request.user):
+            return Issue.objects.filter(assignee=self.request.user)
         else:
             return Issue.objects.filter(submitter=self.request.user)
 
