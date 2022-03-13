@@ -21,39 +21,39 @@ def home(request):
 @method_decorator([login_required, manager_requred], name='dispatch')
 class IssuesListView(ListView):
     model = Issue
-    template_name = 'tnt_mgmt/issues.html'
+    template_name = 'tnt_mgmt/issue/list.html'
     context_object_name = 'issues'
 
 @method_decorator([login_required, manager_requred], name='dispatch')
 class PropertiesListView(ListView):
     model = Property
-    template_name = 'tnt_mgmt/properties.html'
+    template_name = 'tnt_mgmt/property/list.html'
     context_object_name = 'properties'
 
 @method_decorator([login_required, manager_requred], name='dispatch')
 class PropertyDetailView(DetailView):
     model = Property
-    template_name = 'tnt_mgmt/property_detail.html'
+    template_name = 'tnt_mgmt/property/detail.html'
     context_object_name = 'property'
     ordering = ['dateAdded']
 
 @method_decorator([login_required, manager_requred], name='dispatch')
 class AddressListView(ListView):
     model = Address
-    template_name = 'tnt_mgmt/address/address_list.html'
+    template_name = 'tnt_mgmt/address/list.html'
     context_object_name = 'addresses'
 
 @method_decorator([login_required, manager_requred], name='dispatch')
 class AddressDetailView(DetailView):
     model = Address
-    template_name = 'tnt_mgmt/address/address_detail.html'
+    template_name = 'tnt_mgmt/address/detail.html'
     context_object_name = 'address'
     ordering = ['dateAdded']
 
 @method_decorator([login_required, manager_requred], name='dispatch')
 class AddressCreateView(CreateView):
     model = Address
-    template_name = 'tnt_mgmt/address/address_form.html'
+    template_name = 'tnt_mgmt/address/form.html'
     fields = ['country', 'city', 'zipCode', 'street', 'apartment']
 
 @login_required
@@ -66,7 +66,7 @@ def newProperty(request):
             return redirect('propertyDetails', pk = prop.id) 
     else:
         form = PropertyCreateForm()
-    return render(request, 'tnt_mgmt/new_property.html', {'form' : form })
+    return render(request, 'tnt_mgmt/property/form.html', {'form' : form })
 
 
 # def list_users(request):

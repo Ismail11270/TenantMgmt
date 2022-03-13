@@ -1,5 +1,4 @@
-{% extends "tnt_mgmt/base.html" %}
-{% load extra_filters %}
+{% extends "./base.html" %}
 {% block content %}
     <article class="media content-section">
         <div class="media-body">
@@ -18,11 +17,3 @@
         </div>
     </article>
 {% endblock content %}
-{% block additional_actions %}
-    <div class="content-section">
-        <h5 class='text-muted'>Property management tools</h5>
-        <ul class="list-group">
-            <li class="list-group-item list-group-item-light"><a href="{% url 'newProperty' %}">Add property</a></li>
-        </ul>
-    </div>
-{% endblock additional_actions %}

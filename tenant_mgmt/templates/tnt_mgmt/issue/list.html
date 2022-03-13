@@ -1,0 +1,16 @@
+{% extends "./base.html" %}
+{% block content %}
+    <h1>List of registered users</h1>
+    {% for issue in issues %}
+        <article class="media content-section">
+            <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="#">{{ user.username }}</a>
+                <small class="text-muted">{{ user.date_joined }}</small>
+            </div>
+            <h2><a class="article-title" href="#">{{ user.group_set }}</a></h2>
+            <p class="article-content">{{ user.bio }}</p>
+            </div>
+        </article>
+    {% endfor %}
+{% endblock content %}

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import User, AbstractBaseUser
 from django.utils import timezone
+from django.urls import reverse
 
 class Address(models.Model):
     street = models.CharField(max_length=50, null=False)
@@ -10,10 +11,13 @@ class Address(models.Model):
     zipCode = models.CharField(max_length=15, null=False)
     country = models.CharField(max_length=50, null=False)  
     dateAdded = models.DateTimeField(auto_now_add=True)
-    
+
     def __str__(self) -> str:
         return f'{self.country} {self.zipCode} {self.city} , {self.street} {self.apartment}'
 
+    def get_absolute_url(self):
+        return reverse("addressDetails", kwargs={"pk": self.pk})
+    
 
 class Property(models.Model):
     name = models.CharField(max_length=50, null=True)
