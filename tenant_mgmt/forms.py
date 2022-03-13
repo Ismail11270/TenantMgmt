@@ -32,27 +32,6 @@ class IssueCreateForm(ModelForm):
         # ass exclude in view.py before save/commit
 
 
-class IssueCategoryCreateForm(ModelForm):
-
-    class Meta:
-        model = IssueCategory
-        fields = '__all__'
-
-
-class CommentsCreateForm(ModelForm):
-
-    class Meta:
-        model = Comments
-        fields = ['messageText']
-
-
-class AddressCreateForm(ModelForm):
-
-    class Meta:
-        model = Address
-        fields = '__all__'
-
-
 class PropertyCreateForm(ModelForm):
 
     class Meta:
@@ -60,12 +39,3 @@ class PropertyCreateForm(ModelForm):
         fields = '__all__'
         exclude = ['ownerId']
         # add ownerId from view
-
-
-
-class IssueUpdateForm(ModelForm):
-
-    class Meta:
-        model = Issue
-        fields = ['assigner', 'assignee']
-        # ass exclude in view.py before save/commit

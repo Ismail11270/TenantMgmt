@@ -76,14 +76,17 @@ class Issue(models.Model):
         ordering = ['-updated', '-created']
         
 
-class Comments(models.Model):
-    messageText = models.TextField(max_length=200, null=True)
+class Comment(models.Model):
+    messageText = models.TextField(max_length=255, null=True)
 
-    authorId = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    issueId = models.ForeignKey(Issue, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE, related_name="issue_comments")
 
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    dateAdded = models.DateTimeField(auto_now_add=True)
+    dateUpdated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-updated', '-created']
+        ordering = ['-dateUpdated', '-dateAdded']
+
+    def __str__(self):
+        return f'{self.author.username}: {self.messageText}'
