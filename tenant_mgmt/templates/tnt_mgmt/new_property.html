@@ -1,6 +1,5 @@
-{% extends "tnt_mgmt/base.html" %}
+{% extends "tnt_mgmt/base_property.html" %}
 {% load crispy_forms_tags %}
-{% load extra_filters %}
 {% block content %}
     <div class="content-section">
         <form method="POST">
@@ -20,11 +19,3 @@
         </div>
     </div>
 {% endblock content %}
-{% block additional_actions %}
-    <div class="content-section">
-        <h5 class='text-muted'>Property management tools</h5>
-        <ul class="list-group">
-            <li class="list-group-item list-group-item-light"><a href="{% url 'newProperty' %}">Add property</a></li>
-        </ul>
-    </div>
-{% endblock additional_actions %}
