@@ -1,5 +1,14 @@
 {% extends "./base.html" %} {% block content %}
-<h1>Available Issues</h1>
+{% load extra_filters %}
+{% if request.user|has_groups:"administrator|manager" %}
+  <h1>All Available Issues</h1>
+{% endif %}
+{% if request.user|has_groups:"employee" %}
+  <h1>Issues Assigned To Me</h1>
+{% endif %}
+{% if request.user|has_groups:"tenant" %}
+  <h1>Issues Submitted By Me</h1>
+{% endif %}
 {% for issue in issues %}
 <article class="media content-section">
   <div class="media-body">
