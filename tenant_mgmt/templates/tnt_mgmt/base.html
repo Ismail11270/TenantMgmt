@@ -30,7 +30,7 @@
                   <!-- Navbar Right Side -->
                   <div class="navbar-nav">
                     {% if request.user.is_authenticated %}
-                      {% if request.user|has_group:"administrator" %}
+                      {% if request.user|has_groups:"administrator" %}
                         <a class="nav-item nav-link" href="/../admin">Admin Panel</a>
                       {% endif %}  
                       <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
@@ -66,10 +66,10 @@
                     <p class='text-muted'>Navigate to any available service
                       <ul class="list-group">
                         <li class="list-group-item list-group-item-light"><a href="{% url 'issues' %}">Issues Management</a></li>
-                        <li class="list-group-item list-group-item-light"><a href="{% url 'properties'%}">Property Management</a></li>
-                        <li class="list-group-item list-group-item-light"><a href="{% url 'addresses'%}">Address Management</a></li>
-                        <li class="list-group-item list-group-item-light"><a href="#">My Properties</a></li>
-                        <li class="list-group-item list-group-item-light"><a href="#">etc</a></li>
+                        {% if request.user|has_groups:"administrator|manager" %}
+                          <li class="list-group-item list-group-item-light"><a href="{% url 'properties'%}">Property Management</a></li>
+                          <li class="list-group-item list-group-item-light"><a href="{% url 'addresses'%}">Address Management</a></li>
+                        {% endif %}
                       </ul>
                     </p>
                   {% endif %}
