@@ -11,5 +11,7 @@
             <small><a class="article-title" href="#">Owner: {{ property.owner.username }}</a></small>
             </div>
         </article>
+    {% empty %}
+        <small>Empty</small>
     {% endfor %}
 {% endblock content %}

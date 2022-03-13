@@ -12,5 +12,8 @@
             <p class="article-content">{{ user.bio }}</p>
             </div>
         </article>
+    {% empty %}
+        <small> Empty</small>
+
     {% endfor %}
 {% endblock content %}

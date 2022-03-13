@@ -12,5 +12,8 @@
             {% comment %} <p class="article-content">{{ user.bio }}</p> {% endcomment %}
             </div>
         </article>
+    {% empty %}
+        <small>Empty</small>
     {% endfor %}
+
 {% endblock content %}

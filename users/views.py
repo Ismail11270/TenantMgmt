@@ -32,8 +32,21 @@ def profile(request):
 
 @login_required
 def updateProfile(request):
-    u_form = UpdateUserForm(instance=request.user)
-    p_form = UpdateProfileForm(instance=request.user.profile)
+    if request.method == 'POST':
+        u_form = UpdateUserForm(request.POST, instance=request.user)
+        p_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
+
+        if u_form.is_valid and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, f'Account has been updated')
+            return redirect('profile')
+
+    else:
+        u_form = UpdateUserForm(instance=request.user)
+        p_form = UpdateProfileForm( instance=request.user.profile)
+
+
 
     context = {
         'u_form': u_form,
