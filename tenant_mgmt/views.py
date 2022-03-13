@@ -37,6 +37,7 @@ class IssuesListView(ListView):
     model = Issue
     template_name = 'tnt_mgmt/issue/list.html'
     context_object_name = 'issues'
+    paginate_by = 5
 
     def get_queryset(self):
         if util.is_admin_or_manager(self.request.user):
@@ -85,6 +86,7 @@ class PropertiesListView(ListView):
     model = Property
     template_name = 'tnt_mgmt/property/list.html'
     context_object_name = 'properties'
+    paginate_by = 5
 
 
 @method_decorator([login_required, manager_requred], name='dispatch')
@@ -107,7 +109,7 @@ class AddressListView(ListView):
     model = Address
     template_name = 'tnt_mgmt/address/list.html'
     context_object_name = 'addresses'
-
+    paginate_by = 5
 
 @method_decorator([login_required, manager_requred], name='dispatch')
 class AddressDetailView(DetailView):
@@ -181,6 +183,7 @@ class IssueCategoryListView(ListView):
     template_name = 'tnt_mgmt/category/list.html'
     context_object_name = 'categories'
     ordering = ['dateAdded']
+    paginate_by = 5
 
 @method_decorator([login_required, admin_requred], name='dispatch')
 class IssueCategoryCreateView(CreateView):
