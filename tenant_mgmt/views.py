@@ -24,6 +24,10 @@ class IssuesListView(ListView):
     template_name = 'tnt_mgmt/issue/list.html'
     context_object_name = 'issues'
 
+    def get_queryset(self):
+        queryset = Issue.objects.filter(submitter=self.request.user)
+        return queryset
+
 @method_decorator([login_required], name='dispatch')
 class IssueDetailView(DetailView):
     model = Issue
@@ -31,24 +35,38 @@ class IssueDetailView(DetailView):
     context_object_name = 'issue'
     ordering = ['dateAdded']
 
+@login_required
+def newIssue(request):
+    if request.method == 'POST':
+        form = IssueCreateForm(request.user, request.POST)
+        if form.is_valid():
+            prop = form.save(commit=False)
+            prop.submitter = request.user
+            prop.save()
+            return redirect('issueDetails', pk = prop.id) 
+    else:
+        form = IssueCreateForm(user = request.user)
+    return render(request, 'tnt_mgmt/issue/form.html', {'form' : form })
+
 @method_decorator([login_required], name='dispatch')
 class IssueCreateView(CreateView):
     model = Issue
-    form_class = IssueCreateForm
+    # form_class = IssueCreateForm
     template_name = 'tnt_mgmt/issue/form.html'
     
-    def get_form_kwargs(self):
-        # pass "user" keyword argument with the current user to your form
-        kwargs = super(IssueCreateView, self).get_form_kwargs()
-        kwargs['user'] = self.request.user
-        return kwargs
+    # def get_form_kwargs(self):
+    #     # pass "user" keyword argument with the current user to your form
+    #     kwargs = super(IssueCreateView, self).get_form_kwargs()
+    #     kwargs['user'] = self.request.user
+    #     return kwargs
     
-    # fields = ['title', 'description', 'related_property']
+    fields = ['title', 'description', 'related_property']
 
     def form_valid(self, form):
         form.instance.submitter = self.request.user
 
         return super().form_valid(form)
+
 
 
 @method_decorator([login_required, manager_requred], name='dispatch')

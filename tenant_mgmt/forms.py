@@ -15,14 +15,16 @@ class CreateUserForm(UserCreationForm):
 
 class IssueCreateForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
-        super(IssueCreateForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if Group.objects.get(name='administrator') in user.groups.all():
             return
         if Group.objects.get(name='manager') in user.groups.all():
             return
-        self.fields['related_property'] = forms.ChoiceField(
-            choices=[(o.id, str(o)) for o in Property.objects.filter(owner=user)]
-        )
+        l = Property.objects.filter(owner=user)
+        foo_list = []
+        for bar in l:
+            foo_list.append((bar.id, str(bar)),)
+        self.fields['related_property'].choices = foo_list
 
     class Meta:
         model = Issue

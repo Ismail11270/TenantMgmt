@@ -16,7 +16,8 @@ from . import views
 urlpatterns = [
     path('', views.home, name='tnt-mgmt-home'),
     path('issues/', IssuesListView.as_view(), name='issues'),
-    path('issues/new/', IssueCreateView.as_view(), name='newIssue'),
+    # path('issues/new/', IssueCreateView.as_view(), name='newIssue'),
+    path('issues/new/', views.newIssue, name='newIssue'),
     path('issues/<int:pk>', IssueDetailView.as_view(), name='issueDetails'),
     path('addresses/', AddressListView.as_view(), name='addresses'),
     path('addresses/<int:pk>/', AddressDetailView.as_view(), name='addressDetails'),
