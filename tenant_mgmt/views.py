@@ -1,7 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from django.views.generic import ListView, DetailView
+from django.views.generic import (
+    ListView, 
+    DetailView, 
+    CreateView
+)
+
 from .models import Address, Issue, Property
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -32,9 +37,24 @@ class PropertyDetailView(DetailView):
     context_object_name = 'property'
     ordering = ['dateAdded']
 
+@method_decorator([login_required, manager_requred], name='dispatch')
 class AddressListView(ListView):
     model = Address
+    template_name = 'tnt_mgmt/address/address_list.html'
+    context_object_name = 'addresses'
 
+@method_decorator([login_required, manager_requred], name='dispatch')
+class AddressDetailView(DetailView):
+    model = Address
+    template_name = 'tnt_mgmt/address/address_detail.html'
+    context_object_name = 'address'
+    ordering = ['dateAdded']
+
+@method_decorator([login_required, manager_requred], name='dispatch')
+class AddressCreateView(CreateView):
+    model = Address
+    template_name = 'tnt_mgmt/address/address_form.html'
+    fields = ['country', 'city', 'zipCode', 'street', 'apartment']
 
 @login_required
 @manager_requred

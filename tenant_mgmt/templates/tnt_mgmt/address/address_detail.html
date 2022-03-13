@@ -1,0 +1,13 @@
+{% extends "./address_base.html" %}
+{% block content %}
+    <article class="media content-section">
+        <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2" href="#">{{ address }}</a>
+            {% comment %} <small class="text-muted">{{ property.date_added }}</small> {% endcomment %}
+        </div>
+        {% comment %} <h2><a class="article-title" href="#">{{ user.owner }}</a></h2> {% endcomment %}
+        {% comment %} <p class="article-content">{{ user.bio }}</p> {% endcomment %}
+        </div>
+    </article>
+{% endblock content %}
