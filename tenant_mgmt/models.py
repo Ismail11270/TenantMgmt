@@ -9,7 +9,8 @@ class Address(models.Model):
     city = models.CharField(max_length=50, null=False)
     zipCode = models.CharField(max_length=15, null=False)
     country = models.CharField(max_length=50, null=False)  
-
+    dateAdded = models.DateTimeField(auto_now_add=True)
+    
     def __str__(self) -> str:
         return f'{self.country} {self.zipCode} {self.city} , {self.street} {self.apartment}'
 
