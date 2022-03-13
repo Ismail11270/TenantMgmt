@@ -12,6 +12,17 @@ def manager_requred(function=None, redirect_field_name=REDIRECT_FIELD_NAME, logi
         return actual_decorator(function)
     return actual_decorator
 
+def no_employee_allowed(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='login'):
+
+    actual_decorator = user_passes_test(
+        lambda u: not is_allowed(u, ['employee']),
+        login_url=login_url,
+        redirect_field_name=redirect_field_name
+    )
+    if function:
+        return actual_decorator(function)
+    return actual_decorator
+
 def admin_requred(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='login'):
 
     actual_decorator = user_passes_test(

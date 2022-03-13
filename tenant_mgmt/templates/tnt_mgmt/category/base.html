@@ -1,0 +1,9 @@
+{% extends "tnt_mgmt/base.html" %}
+{% block additional_actions %}
+    <div class="content-section">
+        <h5 class='text-muted'>Category Actions</h5>
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-light"><a href="{% url 'newCategory' %}">Add new category</a></li>
+        </ul>
+    </div>
+{% endblock additional_actions %}

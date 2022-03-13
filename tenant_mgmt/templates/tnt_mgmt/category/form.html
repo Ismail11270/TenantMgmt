@@ -5,7 +5,7 @@
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">{% if update %} Editing Address {% else %} New Address {% endif %}</legend>
+                <legend class="border-bottom mb-4">{% if update %} Editing Category {% else %} New Category {% endif %}</legend>
                 {{ form|crispy }} 
             </fieldset>
             <div class="form-group">

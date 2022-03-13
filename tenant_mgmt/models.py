@@ -25,16 +25,22 @@ class Property(models.Model):
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="owner_property_set", null=True, blank=True)
     tenants = models.ManyToManyField(User, related_name="tenant_property_set", blank=True)
     dateAdded = models.DateTimeField(auto_now_add=True)
+    
     def __str__(self) -> str:
         return self.name
 
+    def get_absolute_url(self):
+        return reverse("propertyDetails", kwargs={"pk": self.pk})
 
 class IssueCategory(models.Model):
     title = models.CharField(max_length=50)
+    dateAdded = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
         return self.title
 
+    def get_absolute_url(self):
+        return reverse("categories")
 
 class Issue(models.Model):
     class StatusENUM(models.TextChoices):
@@ -51,7 +57,7 @@ class Issue(models.Model):
     category = models.ForeignKey(IssueCategory, on_delete=models.SET_NULL, null=True)
     related_property = models.ForeignKey(Property, on_delete=models.CASCADE)
     status = models.CharField(max_length=3, choices=StatusENUM.choices, default=StatusENUM.CREATED)
-
+ 
     assigner = models.ForeignKey(User, on_delete=models.SET_NULL, default=None, blank=True, null=True, related_name="assigned_by_issues_set")
     assignee = models.ForeignKey(User, on_delete=models.SET_NULL, default=None, blank=True, null=True, related_name="assigned_to_issues_set")
     submitter = models.ForeignKey(User, on_delete=models.CASCADE, related_name="submitted_issues_set")

@@ -5,20 +5,31 @@ from django.views.generic import (
     ListView, 
     DetailView, 
     CreateView,
-    UpdateView
+    UpdateView,
+    DeleteView
 )
 
-from .models import Address, Issue, Property
+from .models import Address, Issue, Property, IssueCategory
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from .decorators import admin_requred, manager_requred
+from .decorators import admin_requred, manager_requred, no_employee_allowed
 from .forms import PropertyCreateForm, IssueCreateForm
 from . import util
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 # Create your views here.
 
 def home(request):
     return render(request, 'tnt_mgmt/home.html')
+
+
+class CustomUpdateView(UpdateView):
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['update'] = True
+        return context
+
 
 @method_decorator([login_required], name='dispatch')
 class IssuesListView(ListView):
@@ -32,6 +43,7 @@ class IssuesListView(ListView):
         else:
             return Issue.objects.filter(submitter=self.request.user)
 
+
 @method_decorator([login_required], name='dispatch')
 class IssueDetailView(DetailView):
     model = Issue
@@ -39,7 +51,19 @@ class IssueDetailView(DetailView):
     context_object_name = 'issue'
     ordering = ['dateAdded']
 
+
+@method_decorator([login_required], name='dispatch')
+class IssueUpdateView(UserPassesTestMixin, CustomUpdateView):
+    model = Issue
+    fields = ['title', 'description', 'category']
+    template_name = 'tnt_mgmt/issue/form.html'
+
+    def test_func(self):
+        issue = self.get_object()
+        return util.is_admin_or_manager(self.request.user) or self.request.user == issue.submitter
+
 @login_required
+@no_employee_allowed
 def newIssue(request):
     if request.method == 'POST':
         form = IssueCreateForm(request.user, request.POST)
@@ -52,11 +76,13 @@ def newIssue(request):
         form = IssueCreateForm(user = request.user)
     return render(request, 'tnt_mgmt/issue/form.html', {'form' : form })
 
+
 @method_decorator([login_required, manager_requred], name='dispatch')
 class PropertiesListView(ListView):
     model = Property
     template_name = 'tnt_mgmt/property/list.html'
     context_object_name = 'properties'
+
 
 @method_decorator([login_required, manager_requred], name='dispatch')
 class PropertyDetailView(DetailView):
@@ -65,14 +91,20 @@ class PropertyDetailView(DetailView):
     context_object_name = 'property'
     ordering = ['dateAdded']
 
-class PropertyUpdateView(UpdateView):
+
+@method_decorator([login_required, manager_requred], name='dispatch')
+class PropertyUpdateView(CustomUpdateView):
     model = Property
+    fields = ['name', 'owner', 'address']
+    template_name = 'tnt_mgmt/property/form.html'
+
 
 @method_decorator([login_required, manager_requred], name='dispatch')
 class AddressListView(ListView):
     model = Address
     template_name = 'tnt_mgmt/address/list.html'
     context_object_name = 'addresses'
+
 
 @method_decorator([login_required, manager_requred], name='dispatch')
 class AddressDetailView(DetailView):
@@ -81,11 +113,20 @@ class AddressDetailView(DetailView):
     context_object_name = 'address'
     ordering = ['dateAdded']
 
+
 @method_decorator([login_required, manager_requred], name='dispatch')
 class AddressCreateView(CreateView):
     model = Address
     template_name = 'tnt_mgmt/address/form.html'
     fields = ['country', 'city', 'zipCode', 'street', 'apartment']
+
+
+@method_decorator([login_required, manager_requred], name='dispatch')
+class AddressUpdateView(CustomUpdateView):
+    model = Address
+    fields = ['country', 'city', 'zipCode', 'street', 'apartment']
+    template_name = 'tnt_mgmt/address/form.html'
+
 
 @login_required
 @manager_requred
@@ -99,12 +140,23 @@ def newProperty(request):
         form = PropertyCreateForm()
     return render(request, 'tnt_mgmt/property/form.html', {'form' : form })
 
+@method_decorator([login_required, manager_requred], name='dispatch')
+class IssueCategoryListView(ListView):
+    model = IssueCategory
+    template_name = 'tnt_mgmt/category/list.html'
+    context_object_name = 'categories'
+    ordering = ['dateAdded']
 
-# def list_users(request):
+@method_decorator([login_required, manager_requred], name='dispatch')
+class IssueCategoryCreateView(CreateView):
+    model = IssueCategory
+    template_name = 'tnt_mgmt/category/form.html'
+    fields = ['title']
 
-#     context = {
-#         'users': User.objects.all(),
-#         'title_spec': 'Users'
-#     }
-#     return render(request, 'tnt_mgmt\list_users.html', context)
+
+@method_decorator([login_required, manager_requred], name='dispatch')
+class IssueCategoryUpdateView(CustomUpdateView):
+    model = IssueCategory
+    fields = ['title']
+    template_name = 'tnt_mgmt/category/form.html'
     

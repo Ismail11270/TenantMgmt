@@ -70,6 +70,9 @@
                           <li class="list-group-item list-group-item-light"><a href="{% url 'properties'%}">Property Management</a></li>
                           <li class="list-group-item list-group-item-light"><a href="{% url 'addresses'%}">Address Management</a></li>
                         {% endif %}
+                        {% if request.user|has_groups:"administrator" %}
+                          <li class="list-group-item list-group-item-light"><a href="{% url 'categories'%}">Manage Issue Categories</a></li>
+                        {% endif %}
                       </ul>
                     </p>
                   {% endif %}

@@ -5,23 +5,15 @@ from django.contrib.auth.forms import UserCreationForm
 from . import util
 from .models import *
 
-class CreateUserForm(UserCreationForm):
-    email = forms.EmailField()
-    first_name = forms.CharField(label='Your name', max_length=100)
-    last_name = forms.CharField(label='Your surname', max_length=100)
-    
-    class Meta:
-        model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
-
 class IssueCreateForm(ModelForm):
+
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if util.is_admin_or_manager(user):
             return
         l = None
         if util.is_employee(user):
-            properties = Property.objects.filter(assagnee=user)
+            properties = Issue.objects.filter(assignee=user)
         else:
             properties = Property.objects.filter(owner=user)
         choices = []
