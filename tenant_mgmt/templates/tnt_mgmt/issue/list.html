@@ -1,18 +1,28 @@
-{% extends "./base.html" %}
-{% block content %}
-    <h1>Available Issues</h1>
-    {% for issue in issues %}
-        <article class="media content-section">
-            <div class="media-body">
-            <div class="article-metadata">
-                <a class="mr-2" href="{% url 'issueDetails' issue.id %}">{{ issue }}</a>
-                {% comment %} <small class="text-muted">{{ address.date_added }}</small> {% endcomment %}
-            </div>
-            {% comment %} <h2><a class="article-title" href="#">{{ user.owner }}</a></h2> {% endcomment %}
-            {% comment %} <p class="article-content">{{ user.bio }}</p> {% endcomment %}
-            </div>
-        </article>
-    {% empty %}
-        <small>Empty</small>
-    {% endfor %}
-{% endblock content %}
+{% extends "./base.html" %} {% block content %}
+<h1>Available Issues</h1>
+{% for issue in issues %}
+<article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+      <a class="mr-2" href="{% url 'issueDetails' issue.id %}"> <b> {{ issue }} </b></a>
+      <small class="text-muted"
+        >Created: {{ issue.created}} , Last Updated {{issue.updated}}</small>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <small> Current Status: {{issue.status}}</small>
+        </div>
+        <div class="col-md-auto">
+          <a class="btn btn-primary btn-sm" href="#" role="button">View</a>
+        </div>
+        <div class="col col-lg-2">
+          <a class="btn btn-primary btn-sm" href="#" role="button">Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+{% empty %}
+<small>Empty</small>
+{% endfor %} {% endblock content %}
