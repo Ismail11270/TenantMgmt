@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 from django.views.generic import (
     ListView, 
     DetailView, 
-    CreateView
+    CreateView,
+    UpdateView
 )
 
 from .models import Address, Issue, Property
@@ -12,6 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .decorators import admin_requred, manager_requred
 from .forms import PropertyCreateForm, IssueCreateForm
+from . import util
 
 # Create your views here.
 
@@ -25,8 +27,10 @@ class IssuesListView(ListView):
     context_object_name = 'issues'
 
     def get_queryset(self):
-        queryset = Issue.objects.filter(submitter=self.request.user)
-        return queryset
+        if util.is_admin_or_manager(self.request.user):
+            return Issue.objects.all()
+        else:
+            return Issue.objects.filter(submitter=self.request.user)
 
 @method_decorator([login_required], name='dispatch')
 class IssueDetailView(DetailView):
@@ -48,27 +52,6 @@ def newIssue(request):
         form = IssueCreateForm(user = request.user)
     return render(request, 'tnt_mgmt/issue/form.html', {'form' : form })
 
-@method_decorator([login_required], name='dispatch')
-class IssueCreateView(CreateView):
-    model = Issue
-    # form_class = IssueCreateForm
-    template_name = 'tnt_mgmt/issue/form.html'
-    
-    # def get_form_kwargs(self):
-    #     # pass "user" keyword argument with the current user to your form
-    #     kwargs = super(IssueCreateView, self).get_form_kwargs()
-    #     kwargs['user'] = self.request.user
-    #     return kwargs
-    
-    fields = ['title', 'description', 'related_property']
-
-    def form_valid(self, form):
-        form.instance.submitter = self.request.user
-
-        return super().form_valid(form)
-
-
-
 @method_decorator([login_required, manager_requred], name='dispatch')
 class PropertiesListView(ListView):
     model = Property
@@ -81,6 +64,9 @@ class PropertyDetailView(DetailView):
     template_name = 'tnt_mgmt/property/detail.html'
     context_object_name = 'property'
     ordering = ['dateAdded']
+
+class PropertyUpdateView(UpdateView):
+    model = Property
 
 @method_decorator([login_required, manager_requred], name='dispatch')
 class AddressListView(ListView):

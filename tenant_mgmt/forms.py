@@ -2,6 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import UserCreationForm
+from . import util
 from .models import *
 
 class CreateUserForm(UserCreationForm):
@@ -16,15 +17,17 @@ class CreateUserForm(UserCreationForm):
 class IssueCreateForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if Group.objects.get(name='administrator') in user.groups.all():
+        if util.is_admin_or_manager(user):
             return
-        if Group.objects.get(name='manager') in user.groups.all():
-            return
-        l = Property.objects.filter(owner=user)
-        foo_list = []
-        for bar in l:
-            foo_list.append((bar.id, str(bar)),)
-        self.fields['related_property'].choices = foo_list
+        l = None
+        if util.is_employee(user):
+            properties = Property.objects.filter(assagnee=user)
+        else:
+            properties = Property.objects.filter(owner=user)
+        choices = []
+        for prop in properties:
+            choices.append((prop.id, str(prop)),)
+        self.fields['related_property'].choices = choices
 
     class Meta:
         model = Issue
