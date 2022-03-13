@@ -2,12 +2,28 @@
 {% block content %}
     <h1>Available Issue Categories</h1>
     {% for category in categories %}
-                <div class="article-metadata">
-                    <p class="mr-2" > Title: {{ category }}</p>
-                    <p>Created: {{ category.dateAdded }}</p>
-                    <a class="btn btn-primary" href="{% url 'categoryEdit' category.id %}" role="button">Edit</a>
-                    <a class="btn btn-primary" href="{% url 'categoryEdit' category.id %}" role="delete">Delete</a>
-                </div>
+    <article class="media content-section">
+        <div class="media-body">
+          <div class="article-metadata">
+            <b> Title: {{ category }} </b>
+            <small class="text-muted"
+              >Created: {{ category.dateAdded}}</small>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <small> Edit and delete category </small>
+              </div>
+              <div class="col-md-auto">
+                <a class="btn btn-primary btn-sm" href="{% url 'categoryEdit' category.id %}" role="button">Edit</a>
+              </div>
+              <div class="col col-lg-2">
+                <a class="btn btn-primary btn-sm" href="#" role="button">Delete</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
     {% empty %}
         <small>No Issue Categories Available</small>
         <a class="list-group-item list-group-item-light" href="{% url 'newCategory' %}">Add a category</a>
