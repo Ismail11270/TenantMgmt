@@ -1,0 +1,37 @@
+{% extends "./base.html" %} {% block content %}
+<article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+      <a class="mr-2 h3" href="{% url 'issueDetails' issue.id %}">
+        <b> {{ issue }} </b></a
+      >
+      <small class="text-muted"
+        >Created: {{ issue.created}} , Last Updated {{issue.updated}}</small
+      >
+    </div>
+    <div>
+      <br>
+      <h6>Description:</h6>
+      <ul class="h6">
+        {{issue.description}}
+      </ul>
+      <h6>Current Status:</h6>
+      <ul>
+        {{issue.status}}
+      </ul>
+      <h6>Submitter:</h6>
+      <ul>
+        {{issue.submitter}}
+      </ul>
+      <h6>Assigner:</h6>
+      <ul>
+        {{issue.assigner}}
+      </ul>
+      <h6>Assignee:</h6>
+      <ul>
+        {{issue.assignee}}
+      </ul>
+    </div>
+  </div>
+</article>
+{% endblock content %}
