@@ -4,6 +4,7 @@
         <h5 class='text-muted'>Address management tools</h5>
         <ul class="list-group">
             <li class="list-group-item list-group-item-light"><a href="{% url 'newAddress' %}">Add new address</a></li>
+            {% block details_view_actions %}{% endblock details_view_actions %}
         </ul>
     </div>
 {% endblock additional_actions %}

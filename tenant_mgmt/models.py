@@ -44,19 +44,19 @@ class IssueCategory(models.Model):
 
 class Issue(models.Model):
     class StatusENUM(models.TextChoices):
-        CREATED = 'CRE',
-        ASSIGNED = 'ASS'
-        IN_PROGRESS = 'PRO'
-        COMPLETED = 'COM'
-        DELETED = 'DEL'
-        CLOSED = 'CLO'
+        CRE = 'CREATED',
+        ASS = 'ASSIGNED',
+        PRO = 'IN_PROGRESS',
+        COM = 'COMPLETED',
+        DEL = 'DELETED',
+        CLO = 'CLOSE'
 
     title = models.CharField(max_length=50, null=False, blank=False)
     description = models.TextField(max_length=200, null=False, blank=False)
 
     category = models.ForeignKey(IssueCategory, on_delete=models.SET_NULL, null=True)
     related_property = models.ForeignKey(Property, on_delete=models.CASCADE)
-    status = models.CharField(max_length=3, choices=StatusENUM.choices, default=StatusENUM.CREATED)
+    status = models.CharField(max_length=20, choices=StatusENUM.choices, default=StatusENUM.CRE)
  
     assigner = models.ForeignKey(User, on_delete=models.SET_NULL, default=None, blank=True, null=True, related_name="assigned_by_issues_set")
     assignee = models.ForeignKey(User, on_delete=models.SET_NULL, default=None, blank=True, null=True, related_name="assigned_to_issues_set")

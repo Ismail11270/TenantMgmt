@@ -18,7 +18,7 @@
             <a class="btn btn-primary btn-sm" href="{% url 'addressEdit' address.id %}" role="button">Edit</a>
         </div>
         <div class="col col-lg-2">
-          <a class="btn btn-primary btn-sm" href="#" role="button">Delete</a>
+          <a class="btn btn-primary btn-sm" href="{% url 'addressDelete' address.id %}" role="button">Delete</a>
         </div>
       </div>
     </div>

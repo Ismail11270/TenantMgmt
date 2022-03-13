@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.views.generic import (
@@ -128,6 +129,38 @@ class AddressUpdateView(CustomUpdateView):
     template_name = 'tnt_mgmt/address/form.html'
 
 
+@method_decorator([login_required, manager_requred], name='dispatch')
+class AddressDeleteView(DeleteView):
+    model = Address
+    template_name = 'tnt_mgmt/address/delete_confirm.html'
+    def get_success_url(self) -> str:
+        return reverse('addresses')
+
+
+@method_decorator([login_required, admin_requred], name='dispatch')
+class IssueCategoryDeleteView(DeleteView):
+    model = IssueCategory
+    template_name = 'tnt_mgmt/category/delete_confirm.html'
+
+    def get_success_url(self) -> str:
+        return reverse('categories')
+
+
+@method_decorator([login_required, manager_requred], name='dispatch')
+class PropertyDeleteView(DeleteView):
+    model = Property
+    template_name = 'tnt_mgmt/property/delete_confirm.html'
+    def get_success_url(self) -> str:
+        return reverse('addresses')
+
+@method_decorator([login_required, manager_requred], name='dispatch')
+class IssueDeleteView(DeleteView):
+    model = Issue
+    template_name = 'tnt_mgmt/issue/delete_confirm.html'
+    def get_success_url(self) -> str:
+        return reverse('issues')
+    
+
 @login_required
 @manager_requred
 def newProperty(request):
@@ -140,21 +173,21 @@ def newProperty(request):
         form = PropertyCreateForm()
     return render(request, 'tnt_mgmt/property/form.html', {'form' : form })
 
-@method_decorator([login_required, manager_requred], name='dispatch')
+@method_decorator([login_required, admin_requred], name='dispatch')
 class IssueCategoryListView(ListView):
     model = IssueCategory
     template_name = 'tnt_mgmt/category/list.html'
     context_object_name = 'categories'
     ordering = ['dateAdded']
 
-@method_decorator([login_required, manager_requred], name='dispatch')
+@method_decorator([login_required, admin_requred], name='dispatch')
 class IssueCategoryCreateView(CreateView):
     model = IssueCategory
     template_name = 'tnt_mgmt/category/form.html'
     fields = ['title']
 
 
-@method_decorator([login_required, manager_requred], name='dispatch')
+@method_decorator([login_required, admin_requred], name='dispatch')
 class IssueCategoryUpdateView(CustomUpdateView):
     model = IssueCategory
     fields = ['title']

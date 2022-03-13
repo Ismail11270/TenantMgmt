@@ -2,23 +2,23 @@
 <article class="media content-section">
   <div class="media-body">
     <div class="article-metadata">
-      <h2 class="text-muted">Address deatils</h2>
+      <h2 class="text-muted">Address details</h2>
       <a class="mr-2" href="#">{{ address }}</a>
       <small class="text-muted">{{ address.dateAdded }}</small>
     </div>
     <ul>
       <li><small> Street: {{ address.street}}</small></li>
-      <li><small> apartment: {{ address.apartment}}</small></li>
-      <li><small> city: {{ address.city}}</small></li>
-      <li><small> zipCode: {{ address.zipCode}}</small></li>
-      <li><small> country: {{ address.country}}</small></li>
+      <li><small> Apartment: {{ address.apartment}}</small></li>
+      <li><small> City: {{ address.city}}</small></li>
+      <li><small> ZipCode: {{ address.zipCode}}</small></li>
+      <li><small> Country: {{ address.country}}</small></li>
     </ul>
   </div>
 </article>
 <article class="media content-section">
   <div class="media-body">
     <div class="article-metadata">
-      <h2 class="text-muted">List of properties on this address</h2>
+      <h2 class="text-muted">List of properties for this address</h2>
     </div>
     {% for property in address.address_properties_set.all %}
     <article class="media content-section">
@@ -42,3 +42,15 @@
   </div>
 </article>
 {% endblock content %}
+{% block details_view_actions %}
+  <li class="list-group-item list-group-item-light"><button id="editAddress" class="btn btn-outline-danger" type="submit">Edit Address</button></li>
+  <li class="list-group-item list-group-item-light"><button id="deleteAddress" class="btn btn-outline-danger" type="submit">Delete</button></li>
+  <script type="text/javascript">
+    document.getElementById("deleteAddress").onclick = function () {
+      location.href = "{% url 'addressDelete' address.id %}";
+  };
+  document.getElementById("editAddress").onclick = function () {
+    location.href = "{% url 'addressEdit' address.id %}";
+  };
+  </script>
+{% endblock details_view_actions %}

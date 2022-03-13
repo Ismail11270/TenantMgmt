@@ -35,3 +35,15 @@
   </div>
 </article>
 {% endblock content %}
+{% block details_view_actions %}
+  <li class="list-group-item list-group-item-light"><button id="editBtn" class="btn btn-outline-danger" type="submit">Edit Issue</button></li>
+  <li class="list-group-item list-group-item-light"><button id="deleteBtn" class="btn btn-outline-danger" type="submit">Delete</button></li>
+  <script type="text/javascript">
+    document.getElementById("deleteBtn").onclick = function () {
+      location.href = "{% url 'issueDelete' issue.id %}";
+  };
+  document.getElementById("editBtn").onclick = function () {
+    location.href = "{% url 'issueEdit' issue.id %}";
+  };
+  </script>
+{% endblock details_view_actions %}
