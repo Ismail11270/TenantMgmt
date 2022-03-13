@@ -6,7 +6,7 @@
         <article class="media content-section">
             <div class="media-body">
             <div class="article-metadata">
-                <a class="mr-2" href="#">{{ property.name }}</a>
+                <a class="mr-2" href="{% url 'propertyDetails' property.id %}">{{ property.name }}</a>
                 <small class="text-muted">{{ property.date_added }}</small>
             </div>
             <h2><a class="article-title" href="#">{{ user.owner }}</a></h2>

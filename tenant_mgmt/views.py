@@ -1,11 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from django.views.generic import ListView
-from .models import Issue, Property
+from django.views.generic import ListView, DetailView
+from .models import Address, Issue, Property
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .decorators import admin_requred, manager_requred
+from .forms import PropertyCreateForm
 
 # Create your views here.
 
@@ -24,12 +25,32 @@ class PropertiesListView(ListView):
     template_name = 'tnt_mgmt/properties.html'
     context_object_name = 'properties'
 
+@method_decorator([login_required, manager_requred], name='dispatch')
+class PropertyDetailView(DetailView):
+    model = Property
+    template_name = 'tnt_mgmt/property_detail.html'
+    context_object_name = 'property'
+    ordering = ['dateAdded']
+
+class AddressListView(ListView):
+    model = Address
+
 
 @login_required
 @manager_requred
 def newProperty(request):
-    return HttpResponse("ASD")
+    if request.method == 'POST':
+        form = PropertyCreateForm(request.POST)
+        if form.is_valid():
+            prop = form.save()
+            return redirect('propertyDetails', pk = prop.id) 
+    else:
+        form = PropertyCreateForm()
+    return render(request, 'tnt_mgmt/new_property.html', {'form' : form })
+
+
 # def list_users(request):
+
 #     context = {
 #         'users': User.objects.all(),
 #         'title_spec': 'Users'
