@@ -1,19 +1,29 @@
-{% extends "./base.html" %}
-{% block content %}
-    <h1>List of registered addresses</h1>
-    {% for address in addresses %}
-        <article class="media content-section">
-            <div class="media-body">
-            <div class="article-metadata">
-                <a class="mr-2" href="{% url 'addressDetails' address.id %}">{{ address }}</a>
-                <small class="text-muted">{{ address.date_added }}</small>
-            </div>
+{% extends "./base.html" %} {% block content %}
+<h1>List of registered addresses</h1>
+{% for address in addresses %}
+<article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+      <a class="mr-2" href="{% url 'addressDetails' address.id %}">{{ address }}</a>
+      <small class="text-muted">{{ address.date_added }}</small>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col">
             <h2><a class="article-title" href="#">{{ user.owner }}</a></h2>
             <p class="article-content">{{ user.bio }}</p>
-            </div>
-        </article>
-    {% empty %}
-        <small>Empty</small>
-    {% endfor %}
-
-{% endblock content %}
+        </div>
+        <div class="col-md-auto">
+            <a class="btn btn-primary btn-sm" href="{% url 'addressEdit' address.id %}" role="button">Edit</a>
+        </div>
+        <div class="col col-lg-2">
+          <a class="btn btn-primary btn-sm" href="#" role="button">Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+{% empty %}
+<small>Empty</small>
+{% endfor %} {% endblock content %}

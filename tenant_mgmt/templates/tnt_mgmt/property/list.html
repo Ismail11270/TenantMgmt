@@ -6,9 +6,19 @@
             <div class="media-body">
             <div class="article-metadata">
                 <a class="mr-2" href="{% url 'propertyDetails' property.id %}">{{ property.name }}</a>
-                <small class="text-muted">{{ property.dateAdded }}</small>
-            </div>
-            <small><a class="article-title" href="#">Owner: {{ property.owner.username }}</a></small>
+            <small class="text-muted">{{ property.dateAdded }}</small>
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <small><a class="article-title" href="#">Owner: {{ property.owner.username }}</a></small>
+                    </div>
+                    <div class="col-md-auto">
+                        <a class="btn btn-primary btn-sm" href="{% url 'propertyEdit' property.id %}" role="button">Edit</a>
+                    </div>
+                    <div class="col col-lg-2">
+                        <a class="btn bftn-primary btn-sm" href="#" role="button">Delete</a>
+                    </div>
+                </div>
             </div>
         </article>
     {% empty %}
