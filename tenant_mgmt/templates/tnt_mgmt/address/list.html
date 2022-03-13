@@ -6,10 +6,10 @@
             <div class="media-body">
             <div class="article-metadata">
                 <a class="mr-2" href="{% url 'addressDetails' address.id %}">{{ address }}</a>
-                {% comment %} <small class="text-muted">{{ address.date_added }}</small> {% endcomment %}
+                <small class="text-muted">{{ address.date_added }}</small>
             </div>
-            {% comment %} <h2><a class="article-title" href="#">{{ user.owner }}</a></h2> {% endcomment %}
-            {% comment %} <p class="article-content">{{ user.bio }}</p> {% endcomment %}
+            <h2><a class="article-title" href="#">{{ user.owner }}</a></h2>
+            <p class="article-content">{{ user.bio }}</p>
             </div>
         </article>
     {% empty %}

@@ -14,7 +14,7 @@
           <small> Current Status: {{issue.status}}</small>
         </div>
         <div class="col-md-auto">
-          <a class="btn btn-primary btn-sm" href="#" role="button">View</a>
+          <a class="btn btn-primary btn-sm" href="{% url 'issueDetails' issue.id %}" role="button">Edit</a>
         </div>
         <div class="col col-lg-2">
           <a class="btn btn-primary btn-sm" href="#" role="button">Delete</a>

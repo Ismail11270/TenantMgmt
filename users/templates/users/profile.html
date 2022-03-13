@@ -7,6 +7,15 @@
       <div class="media-body">
         <h2 class="account-heading">{{ user.username }}</h2>
         <p class="text-secondary">{{ user.email }}</p>
+        <h6 class="text-secondary"> Groups: </h6>
+        {% for group in user.groups.all %}
+          <ul>
+            <li class="text-secondary"> {{ group.name }}</li>
+          </ul>
+        {% empty %}
+            <small> Group not deffined</small>
+        {% endfor %}
+        
       </div>
     </div>
     <a class="btn btn-primary" href="{% url 'updateProfile' %}" role="button">Update Profile</a>
