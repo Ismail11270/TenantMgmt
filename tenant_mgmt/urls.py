@@ -1,6 +1,8 @@
 from django.urls import path
 from .views import (
-    IssuesListView, 
+    IssuesListView,
+    IssueCreateView,
+    IssueDetailView,
     PropertiesListView, 
     PropertyDetailView, 
     AddressListView, 
@@ -14,7 +16,8 @@ from . import views
 urlpatterns = [
     path('', views.home, name='tnt-mgmt-home'),
     path('issues/', IssuesListView.as_view(), name='issues'),
-    path('issues/new/', IssuesListView.as_view(), name='newIssue'),
+    path('issues/new/', IssueCreateView.as_view(), name='newIssue'),
+    path('issues/<int:pk>', IssueDetailView.as_view(), name='issueDetails'),
     path('addresses/', AddressListView.as_view(), name='addresses'),
     path('addresses/<int:pk>/', AddressDetailView.as_view(), name='addressDetails'),
     path('addresses/new/', AddressCreateView.as_view(), name='newAddress'),

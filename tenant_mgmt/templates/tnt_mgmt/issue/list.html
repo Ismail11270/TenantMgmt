@@ -1,15 +1,15 @@
 {% extends "./base.html" %}
 {% block content %}
-    <h1>List of registered users</h1>
+    <h1>Available Issues</h1>
     {% for issue in issues %}
         <article class="media content-section">
             <div class="media-body">
             <div class="article-metadata">
-                <a class="mr-2" href="#">{{ user.username }}</a>
-                <small class="text-muted">{{ user.date_joined }}</small>
+                <a class="mr-2" href="{% url 'issueDetails' issue.id %}">{{ issue }}</a>
+                {% comment %} <small class="text-muted">{{ address.date_added }}</small> {% endcomment %}
             </div>
-            <h2><a class="article-title" href="#">{{ user.group_set }}</a></h2>
-            <p class="article-content">{{ user.bio }}</p>
+            {% comment %} <h2><a class="article-title" href="#">{{ user.owner }}</a></h2> {% endcomment %}
+            {% comment %} <p class="article-content">{{ user.bio }}</p> {% endcomment %}
             </div>
         </article>
     {% endfor %}

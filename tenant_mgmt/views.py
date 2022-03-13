@@ -11,18 +11,45 @@ from .models import Address, Issue, Property
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .decorators import admin_requred, manager_requred
-from .forms import PropertyCreateForm
+from .forms import PropertyCreateForm, IssueCreateForm
 
 # Create your views here.
 
 def home(request):
     return render(request, 'tnt_mgmt/home.html')
 
-@method_decorator([login_required, manager_requred], name='dispatch')
+@method_decorator([login_required], name='dispatch')
 class IssuesListView(ListView):
     model = Issue
     template_name = 'tnt_mgmt/issue/list.html'
     context_object_name = 'issues'
+
+@method_decorator([login_required], name='dispatch')
+class IssueDetailView(DetailView):
+    model = Issue
+    template_name = 'tnt_mgmt/issue/detail.html'
+    context_object_name = 'issue'
+    ordering = ['dateAdded']
+
+@method_decorator([login_required], name='dispatch')
+class IssueCreateView(CreateView):
+    model = Issue
+    form_class = IssueCreateForm
+    template_name = 'tnt_mgmt/issue/form.html'
+    
+    def get_form_kwargs(self):
+        # pass "user" keyword argument with the current user to your form
+        kwargs = super(IssueCreateView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+    
+    # fields = ['title', 'description', 'related_property']
+
+    def form_valid(self, form):
+        form.instance.submitter = self.request.user
+
+        return super().form_valid(form)
+
 
 @method_decorator([login_required, manager_requred], name='dispatch')
 class PropertiesListView(ListView):

@@ -8,20 +8,30 @@ class CreateUserForm(UserCreationForm):
     email = forms.EmailField()
     first_name = forms.CharField(label='Your name', max_length=100)
     last_name = forms.CharField(label='Your surname', max_length=100)
-  
+    
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
 
 class IssueCreateForm(ModelForm):
-    
+    def __init__(self, user, *args, **kwargs):
+        super(IssueCreateForm, self).__init__(*args, **kwargs)
+        if Group.objects.get(name='administrator') in user.groups.all():
+            return
+        if Group.objects.get(name='manager') in user.groups.all():
+            return
+        self.fields['related_property'] = forms.ChoiceField(
+            choices=[(o.id, str(o)) for o in Property.objects.filter(owner=user)]
+        )
+
     class Meta:
         model = Issue
+        
         fields = '__all__'
-        widgets = {
-            'email': forms.EmailField()
-        }
-        exclude = ['assigner', 'assignee', 'submitter']
+        # widgets = {
+        #     'email': forms.EmailField()
+        # }
+        exclude = ['assigner', 'assignee', 'submitter', 'status']
         # ass exclude in view.py before save/commit
 
 

@@ -39,14 +39,14 @@ class IssueCategory(models.Model):
 class Issue(models.Model):
     class StatusENUM(models.TextChoices):
         CREATED = 'CRE',
-        ASSIGED = 'ASS'
-        PROGRESS = 'PRO'
-        COMPLATED = 'COM'
+        ASSIGNED = 'ASS'
+        IN_PROGRESS = 'PRO'
+        COMPLETED = 'COM'
         DELETED = 'DEL'
         CLOSED = 'CLO'
 
-    name = models.CharField(max_length=50, null=True)
-    description = models.TextField(max_length=200, null=True)
+    title = models.CharField(max_length=50, null=False, blank=False)
+    description = models.TextField(max_length=200, null=False, blank=False)
 
     category = models.ForeignKey(IssueCategory, on_delete=models.SET_NULL, null=True)
     related_property = models.ForeignKey(Property, on_delete=models.CASCADE)
@@ -61,7 +61,7 @@ class Issue(models.Model):
 
 
     def __str__(self) -> str:
-        return self.name
+        return self.title
 
     class Meta:
         ordering = ['-updated', '-created']
