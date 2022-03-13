@@ -3,11 +3,33 @@
     <article class="media content-section">
         <div class="media-body">
         <div class="article-metadata">
+            <h2 class="text-muted"> Address deatils</h2>
             <a class="mr-2" href="#">{{ address }}</a>
-            {% comment %} <small class="text-muted">{{ property.date_added }}</small> {% endcomment %}
+            <small class="text-muted">{{ address.dateAdded }}</small>
         </div>
-        {% comment %} <h2><a class="article-title" href="#">{{ user.owner }}</a></h2> {% endcomment %}
-        {% comment %} <p class="article-content">{{ user.bio }}</p> {% endcomment %}
+        <small> Street:  {{ address.street}}</small> <br>
+        <small> apartment:  {{ address.apartment}}</small> <br>
+        <small> city:     {{ address.city}}</small> <br>
+        <small> zipCode:   {{ address.zipCode}}</small> <br>
+        <small> country:   {{ address.country}}</small> <br>
+        </div>
+    </article>
+    <article class="media content-section">
+        <div class="media-body">
+        <div class="article-metadata">
+            <h2 class="text-muted"> List of properties on this address</h2>
+        </div>
+        {% for property in address.address_properties_set.all %}
+        <article class="media content-section">
+            <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="{% url 'propertyDetails' property.id %}">{{ property.name }}</a>
+                <small class="text-muted">{{ property.dateAdded }}</small>
+            </div>
+            <small><a class="article-title" href="#">Owner: {{ property.owner.username }}</a></small>
+            </div>
+        </article>
+        {% endfor %}
         </div>
     </article>
 {% endblock content %}
