@@ -58,7 +58,7 @@ class Issue(models.Model):
     related_property = models.ForeignKey(Property, on_delete=models.CASCADE)
     status = models.CharField(max_length=20, choices=StatusENUM.choices, default=StatusENUM.CRE)
  
-    assigner = models.ForeignKey(User, on_delete=models.SET_NULL, default=None, blank=True, null=True, related_name="assigned_by_issues_set")
+    manager = models.ForeignKey(User, on_delete=models.SET_NULL, default=None, blank=True, null=True, related_name="assigned_by_issues_set")
     assignee = models.ForeignKey(User, on_delete=models.SET_NULL, default=None, blank=True, null=True, related_name="assigned_to_issues_set")
     submitter = models.ForeignKey(User, on_delete=models.CASCADE, related_name="submitted_issues_set")
 
