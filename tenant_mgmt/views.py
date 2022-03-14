@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -10,7 +10,7 @@ from django.views.generic import (
     DeleteView
 )
 
-from .models import Address, Issue, Property, IssueCategory
+from .models import Address, Issue, Property, IssueCategory, Comment
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .decorators import admin_requred, manager_requred, no_employee_allowed
@@ -40,12 +40,35 @@ class IssuesListView(ListView):
     paginate_by = 5
 
     def get_queryset(self):
+        status = self.request.GET.get('status') 
+        if status:
+            if util.is_admin_or_manager(self.request.user):
+                return Issue.objects.filter(status=status).order_by('-created')
+            if util.is_employee(self.request.user):
+                 return Issue.objects.filter(status=status, assignee=self.request.user)
         if util.is_admin_or_manager(self.request.user):
             return Issue.objects.all()
         if util.is_employee(self.request.user):
             return Issue.objects.filter(assignee=self.request.user)
         else:
             return Issue.objects.filter(submitter=self.request.user)
+
+class IssuesForManagerListView(ListView):
+    model = Issue
+    template_name = 'tnt_mgmt/issue/list.html'
+    context_object_name = 'issues'
+    paginate_by = 5
+
+    def get_queryset(self):
+        status=self.kwargs.get('status')
+        print(Issue.StatusENUM.choices)
+        return Issue.objects.filter(status=Issue.StatusENUM.choices[status]).order_by('-created')
+        # if util.is_admin_or_manager(self.request.user):
+        #     return Issue.objects.all()
+        # if util.is_employee(self.request.user):
+        #     return Issue.objects.filter(assignee=self.request.user)
+        # else:
+        #     return Issue.objects.filter(submitter=self.request.user)
 
 
 @method_decorator([login_required], name='dispatch')
@@ -54,6 +77,23 @@ class IssueDetailView(DetailView):
     template_name = 'tnt_mgmt/issue/detail.html'
     context_object_name = 'issue'
     ordering = ['dateAdded']
+
+    def get_context_data(self, **kwargs):
+        context = super(IssueDetailView, self).get_context_data(**kwargs)
+        context['form'] = IssueDetailView
+        return context
+
+    def post(self, request, *args, **kwargs):
+        issue = self.get_object()
+        if request.method == 'POST':
+            if request.POST['comment_text']:
+                comment = Comment(
+                    messageText=request.POST['comment_text'], 
+                    issue=issue, 
+                    author=request.user
+                )
+                comment.save()
+        return render(request,self.template_name, {'issue':issue})
 
 
 @method_decorator([login_required], name='dispatch')

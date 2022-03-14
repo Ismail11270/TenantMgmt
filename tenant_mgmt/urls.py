@@ -43,5 +43,4 @@ urlpatterns = [
     path('categories/new/', IssueCategoryCreateView.as_view(), name='newCategory'),
     path('categories/<int:pk>/edit/', IssueCategoryUpdateView.as_view(), name='categoryEdit'),
     path('categories/<int:pk>/delete/', IssueCategoryDeleteView.as_view(), name='categoryDelete'),
-    
 ]

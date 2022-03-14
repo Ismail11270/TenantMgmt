@@ -86,7 +86,7 @@ class Comment(models.Model):
     dateUpdated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-dateUpdated', '-dateAdded']
+        ordering = ['dateUpdated', 'dateAdded']
 
     def __str__(self):
         return f'{self.author.username}: {self.messageText}'

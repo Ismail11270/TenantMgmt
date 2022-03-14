@@ -58,17 +58,22 @@
           </div>
         </div>
         {% empty %}
-        <small> comments are empty </small>
+        <small> No Comments...</small>
         {% endfor %}
       </div>
       <br>
       <div>
+        <form method="POST">
+          {% csrf_token %}
         Add Comments: 
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Comments.." aria-label="Recipient's username" aria-describedby="basic-addon2">
+          <fieldset class="form-group">
+            <input type="text" name="comment_text" class="form-control" placeholder="Comments.." aria-label="Recipient's username" aria-describedby="basic-addon2">
+          </fieldset>
           <div class="input-group-append">
             <button class="btn btn-outline-secondary" type="submit">Add</button>
           </div>
+        </form>
         </div>        
       </div>
     </div>
