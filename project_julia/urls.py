@@ -11,4 +11,5 @@ urlpatterns = [
     path('register/', user_views.register, name='register'),
     path('profile/', user_views.profile, name='profile'),
     path('updateProfile/', user_views.updateProfile, name='updateProfile'),
+    path('api/', include('tenant_mgmt.api.urls')),
 ]
