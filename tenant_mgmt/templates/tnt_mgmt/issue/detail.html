@@ -29,7 +29,25 @@
       </ul>
       <h6>Assignee:</h6>
       <ul>
-        {{issue.assignee}}
+        {% if issue.assignee %}
+          {{issue.assignee}}
+        {% endif %}
+      </br></br>
+    
+        <form method="POST">
+          {% csrf_token %}
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <button class="btn btn-outline-secondary" type="submit">Assign</button>
+            </div>
+            <select name="assignee" class="custom-select" id="inputGroupSelect03">
+              <option selected>Employees...</option>
+              {% for employee in employees  %}
+              <option value="{{employee.id}}">{{employee.username}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </form>
       </ul>
       <hr />
     </div>

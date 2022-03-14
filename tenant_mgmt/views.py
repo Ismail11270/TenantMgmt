@@ -80,13 +80,19 @@ class IssueDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(IssueDetailView, self).get_context_data(**kwargs)
-        context['form'] = IssueDetailView
+        context['employees'] = User.objects.filter(groups__name='employee')
         return context
 
     def post(self, request, *args, **kwargs):
         issue = self.get_object()
         if request.method == 'POST':
-            if request.POST['comment_text']:
+            if request.POST['assignee']:
+                # print(User.objects.get(id=request.POST['assignee']))
+                issue.assignee = User.objects.get(id=request.POST['assignee'])
+                issue.assigner = request.user
+                issue.status = Issue.StatusENUM.ASS
+                issue.save()
+            elif request.POST['comment_text']:
                 comment = Comment(
                     messageText=request.POST['comment_text'], 
                     issue=issue, 
