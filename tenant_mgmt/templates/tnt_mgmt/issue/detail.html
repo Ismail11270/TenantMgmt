@@ -1,5 +1,4 @@
-{% extends "./base.html" %} {% block content %}
-{% load extra_filters %}
+{% extends "./base.html" %} {% block content %} {% load extra_filters %}
 <article class="media content-section">
   <div class="media-body">
     <div class="article-metadata">
@@ -11,7 +10,7 @@
       >
     </div>
     <div>
-      <br>
+      <br />
       <h6>Description:</h6>
       <ul class="h6">
         {{issue.description}}
@@ -32,23 +31,71 @@
       <ul>
         {{issue.assignee}}
       </ul>
+      <hr />
+    </div>
+    <div class="container border border-gray rounded">
+      <h6>Comments:</h6>
+      <hr />
+      <div class="border border-gray rounded">
+        {% for comment in issue.issue_comments.all %}
+        <div class="border border-gray rounded">
+          <div>
+            <ul>
+              {{comment.messageText}}
+            </ul>
+            <ul>
+              <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <small class="text-muted">By: {{comment.author}}</small>
+                  </div>
+                  <div class="col col-lg-5">
+                    <small class="text-muted">{{comment.dateAdded}}</small>
+                  </div>
+                </div>
+              </div>
+            </ul>
+          </div>
+        </div>
+        {% empty %}
+        <small> comments are empty </small>
+        {% endfor %}
+      </div>
+      <br>
+      <div>
+        Add Comments: 
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Comments.." aria-label="Recipient's username" aria-describedby="basic-addon2">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit">Add</button>
+          </div>
+        </div>        
+      </div>
     </div>
   </div>
 </article>
-{% endblock content %}
-{% block details_view_actions %}
-  {% if request.user|has_groups:"administrator|manager|tenant" %}
-    <li class="list-group-item list-group-item-light"><button id="editBtn" class="btn btn-outline-danger" type="submit">Edit Issue</button></li>
-    {% if request.user|has_groups:"administrator|manager" %}
-      <li class="list-group-item list-group-item-light"><button id="deleteBtn" class="btn btn-outline-danger" type="submit">Delete</button></li>
-    {% endif %}
-    <script type="text/javascript">
+{% endblock content %} 
+{% block details_view_actions %} 
+{% if request.user|has_groups:"administrator|manager|tenant" %}
+<li class="list-group-item list-group-item-light">
+  <button id="editBtn" class="btn btn-outline-danger" type="submit">
+    Edit Issue
+  </button>
+</li>
+{% if request.user|has_groups:"administrator|manager" %}
+<li class="list-group-item list-group-item-light">
+  <button id="deleteBtn" class="btn btn-outline-danger" type="submit">
+    Delete
+  </button>
+</li>
+{% endif %}
+{% endif %}
+<script type="text/javascript">
       document.getElementById("deleteBtn").onclick = function () {
         location.href = "{% url 'issueDelete' issue.id %}";
     };
     document.getElementById("editBtn").onclick = function () {
       location.href = "{% url 'issueEdit' issue.id %}";
     };
-  {% endif %}
-  </script>
+</script>
 {% endblock details_view_actions %}
