@@ -1,11 +1,10 @@
 from django.urls import path, include
-from tenant_mgmt.api.views import *
+from tenant_mgmt.api.views import AddressViewSet, UserViewSet, PropertyViewSet, IssueCategoryViewSet, IssueViewSet, CommentsViewSet
 from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
 
 
 routers = routers.DefaultRouter()
-# routers.register(r'UserGroups', UserGroupViewSet)
 routers.register(r'Addresses', AddressViewSet)
 routers.register(r'Users', UserViewSet)
 routers.register(r'Properties', PropertyViewSet)

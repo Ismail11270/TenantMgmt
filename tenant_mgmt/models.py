@@ -4,6 +4,7 @@ from django.contrib.auth.models import User, AbstractBaseUser
 from django.utils import timezone
 from django.urls import reverse
 
+
 class Address(models.Model):
     street = models.CharField(max_length=50, null=False)
     apartment = models.CharField(max_length=10, null=False)
@@ -32,6 +33,7 @@ class Property(models.Model):
     def get_absolute_url(self):
         return reverse("propertyDetails", kwargs={"pk": self.pk})
 
+
 class IssueCategory(models.Model):
     title = models.CharField(max_length=50)
     dateAdded = models.DateTimeField(auto_now_add=True)
@@ -41,6 +43,7 @@ class IssueCategory(models.Model):
 
     def get_absolute_url(self):
         return reverse("categories")
+
 
 class Issue(models.Model):
     class StatusENUM(models.TextChoices):

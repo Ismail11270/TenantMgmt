@@ -1,11 +1,7 @@
-from tenant_mgmt.models import Issue, User, Address, Comment, Property, IssueCategory
+from tenant_mgmt.models import Issue, Address, Comment, Property, IssueCategory
+from users.models import Profile
 from rest_framework import viewsets
-from tenant_mgmt.api.serializers import *
-
-
-# class UserGroupViewSet(viewsets.ModelViewSet):
-#     queryset = UserGroup.objects.all()
-#     serializer_class = UserGroupSerializer 
+from tenant_mgmt.api.serializers import AddressSerializer, UserSerializer, IssueCategorySerializer, IssueSerializer, CommentsSerializer, PropertySerializer
 
 
 class AddressViewSet(viewsets.ModelViewSet):
@@ -14,7 +10,7 @@ class AddressViewSet(viewsets.ModelViewSet):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = Profile.objects.all()
     serializer_class = UserSerializer
 
 
