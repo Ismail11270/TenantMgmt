@@ -72,7 +72,7 @@ class IssuesForManagerListView(ListView):
 
 
 @method_decorator([login_required], name='dispatch')
-class IssueDetailView(DetailView):
+class IssueDetailView(UserPassesTestMixin, DetailView):
     model = Issue
     template_name = 'tnt_mgmt/issue/detail.html'
     context_object_name = 'issue'
@@ -86,20 +86,28 @@ class IssueDetailView(DetailView):
     def post(self, request, *args, **kwargs):
         issue = self.get_object()
         if request.method == 'POST':
-            if request.POST['assignee']:
+            if request.POST['action'] == 'assign':
                 employee = User.objects.get(id=request.POST['assignee'])
                 issue.assignee = employee
                 issue.manager = request.user
                 issue.status = Issue.StatusENUM.ASS
                 issue.save()
-            elif request.POST['comment_text']:
+            elif request.POST['action'] == 'comment':
                 comment = Comment(
                     messageText=request.POST['comment_text'], 
                     issue=issue, 
                     author=request.user
                 )
                 comment.save()
-        return render(request,self.template_name, {'issue':issue})
+            elif request.POST['action'] == 'setStatus':
+                issue.status = request.POST['status']
+                issue.save()
+        emps = User.objects.filter(groups__name='employee')
+        return render(request,self.template_name, {'issue':issue, 'employees': emps})
+
+    def test_func(self):
+        issue = self.get_object()
+        return util.is_admin_or_manager(self.request.user) or self.request.user == issue.submitter or self.request.user == issue.assignee
 
 
 @method_decorator([login_required], name='dispatch')

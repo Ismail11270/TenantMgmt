@@ -49,7 +49,7 @@ class Issue(models.Model):
         PRO = 'IN_PROGRESS',
         COM = 'COMPLETED',
         DEL = 'DELETED',
-        CLO = 'CLOSE'
+        CLO = 'CLOSED'
 
     title = models.CharField(max_length=50, null=False, blank=False)
     description = models.TextField(max_length=200, null=False, blank=False)
