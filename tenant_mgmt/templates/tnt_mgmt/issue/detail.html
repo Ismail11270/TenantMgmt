@@ -38,7 +38,7 @@
           {% csrf_token %}
           <div class="input-group mb-3">
             <div class="input-group-prepend">
-              <button class="btn btn-outline-secondary" type="submit">Assign</button>
+              <button class="btn btn-outline-secondary" type="submit"  {% if issue.status == 'CLOSED' %}disabled{% endif %}>Assign</button>
             </div>
             <select name="assignee" class="custom-select" id="inputGroupSelect03">
               {% for employee in employees  %}
