@@ -87,9 +87,9 @@ class IssueDetailView(DetailView):
         issue = self.get_object()
         if request.method == 'POST':
             if request.POST['assignee']:
-                # print(User.objects.get(id=request.POST['assignee']))
-                issue.assignee = User.objects.get(id=request.POST['assignee'])
-                issue.assigner = request.user
+                employee = User.objects.get(id=request.POST['assignee'])
+                issue.assignee = employee
+                issue.manager = request.user
                 issue.status = Issue.StatusENUM.ASS
                 issue.save()
             elif request.POST['comment_text']:

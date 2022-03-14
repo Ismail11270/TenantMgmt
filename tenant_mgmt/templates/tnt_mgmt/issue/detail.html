@@ -17,7 +17,7 @@
       </ul>
       <h6>Current Status:</h6>
       <ul>
-        {{issue.status}}
+        {{issue.status}} {% if issue.status == 'ASSIGNED' %} to {{issue.assignee.username}}{% endif %}
       </ul>
       <h6>Submitter:</h6>
       <ul>
@@ -25,7 +25,7 @@
       </ul>
       <h6>Assigner:</h6>
       <ul>
-        {{issue.assigner}}
+        {{issue.manager}}
       </ul>
       <h6>Assignee:</h6>
       <ul>
@@ -33,7 +33,7 @@
           {{issue.assignee}}
         {% endif %}
       </br></br>
-    
+      {% if request.user|has_groups:"administrator|manager" %}
         <form method="POST">
           {% csrf_token %}
           <div class="input-group mb-3">
@@ -41,13 +41,13 @@
               <button class="btn btn-outline-secondary" type="submit">Assign</button>
             </div>
             <select name="assignee" class="custom-select" id="inputGroupSelect03">
-              <option selected>Employees...</option>
               {% for employee in employees  %}
               <option value="{{employee.id}}">{{employee.username}}</option>
               {% endfor %}
             </select>
           </div>
         </form>
+      {% endif %}
       </ul>
       <hr />
     </div>
