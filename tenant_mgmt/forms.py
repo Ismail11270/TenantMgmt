@@ -15,8 +15,10 @@ class IssueCreateForm(ModelForm):
         if util.is_employee(user):
             properties = Issue.objects.filter(assignee=user)
         else:
-            properties = Property.objects.filter(owner=user)
+            properties = Property.objects.filter(tenants=user)
+
         choices = []
+
         for prop in properties:
             choices.append((prop.id, str(prop)),)
         self.fields['related_property'].choices = choices
